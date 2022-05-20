@@ -1,6 +1,7 @@
 package com.company.tutorial.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Vendor {
     @OneToMany(mappedBy = "vendor")
     private List<Contact> contact;
 
+    @InstanceName
     @Column(name = "COMPANY_NAME")
     private String companyName;
 
