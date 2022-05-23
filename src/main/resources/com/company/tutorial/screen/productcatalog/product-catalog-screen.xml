@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://jmix.io/schema/ui/window"
         caption="msg://productCatalogScreen.caption">
+    <data>
+        <collection id="productsDc" class="com.company.tutorial.entity.Product">
+            <fetchPlan extends="_base">
+            </fetchPlan>
+            <loader id="productsDl">
+                <query>
+                    <![CDATA[select e from Product e]]>
+                </query>
+            </loader>
+        </collection>
+        <instance id="productDc" class="com.company.tutorial.entity.Product">
+            <fetchPlan extends="_base">
+                <property name="vendor" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="productDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
     <layout>
+        <split id="split" height="100%" orientation="horizontal" reversePosition="true" width="100%">
+            <vbox id="lookupBox" height="100%" margin="true" spacing="true" expand="productsTable">
+                <dataGrid id="productsTable" width="100%" dataContainer="productsDc" bodyRowHeight="70">
+                    <actions>
+                        <action id="create" type="create"/>
+                    </actions>
+                    <buttonsPanel alwaysVisible="true">
+                        <button id="productsTableCreateBtn" action="productsTable.create"/>
+                    </buttonsPanel>
+                    <columns>
+                        <column id="image" property="image" width="150">
+                            <componentRenderer/>
+                        </column>
+                        <column id="productName" property="productName"/>
+                        <column id="unit" property="unit"/>
+                        <column id="sku" property="sku"/>
+                    </columns>
+                </dataGrid>
+            </vbox>
+            <vbox id="infoBox" margin="true" spacing="true" align="TOP_CENTER" width="95%">
+                <groupBox id="productInfoBox" caption="Product Information" orientation="horizontal" spacing="true">
+                    <form id="form" dataContainer="productDc" childrenCaptionWidth="150px">
+                        <column width="250px">
+                            <textField id="productNameField" property="productName"/>
+                            <textField id="skuField" property="sku"/>
+                            <textArea id="productDescriptionField" property="productDescription"/>
+                        </column>
+                        <column width="150px" childrenCaptionWidth="1px">
+                            <image id="imageField" property="image" scaleMode="SCALE_DOWN" rowspan="3" caption=" "/>
+                        </column>
+                    </form>
+                </groupBox>
+                <groupBox id="productPriceBox" caption="Product Price" orientation="vertical" stylename="light">
+                    <form id="productPriceForm" dataContainer="productDc" childrenCaptionWidth="150px">
+                        <column width="250px">
+                            <textField id="pricePerUnitField" property="pricePerUnit"/>
+                            <textField id="retailPriceField" property="retailPrice"/>
+                            <textField id="currencyField" property="currency"/>
+                        </column>
+                    </form>
+                </groupBox>
+                <groupBox id="vendorBox" caption="Vendor" orientation="vertical">
+                    <form id="productForm" dataContainer="productDc" childrenCaptionWidth="150px">
+                        <column width="250px">
+                            <textField property="vendor.companyName"/>
+                            <textArea property="vendor.contractTerms"/>
+                        </column>
+                    </form>
+                </groupBox>
+                <groupBox id="stockBox" caption="Stock" orientation="vertical">
+                </groupBox>
+            </vbox>
+        </split>
     </layout>
 </window>
