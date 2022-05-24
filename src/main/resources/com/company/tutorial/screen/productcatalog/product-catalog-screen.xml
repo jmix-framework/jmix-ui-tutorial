@@ -27,9 +27,13 @@
                 <dataGrid id="productsTable" width="100%" dataContainer="productsDc" bodyRowHeight="70">
                     <actions>
                         <action id="create" type="create"/>
+                        <action id="edit" type="edit"/>
+                        <action id="remove" type="remove"/>
                     </actions>
                     <buttonsPanel alwaysVisible="true">
                         <button id="productsTableCreateBtn" action="productsTable.create"/>
+                        <button id="productsTableEditBtn" action="productsTable.edit"/>
+                        <button id="productsTableRemoveBtn" action="productsTable.remove"/>
                     </buttonsPanel>
                     <columns>
                         <column id="image" property="image" width="150">
@@ -42,19 +46,20 @@
                 </dataGrid>
             </vbox>
             <vbox id="infoBox" margin="true" spacing="true" align="TOP_CENTER" width="95%">
-                <groupBox id="productInfoBox" caption="Product Information" orientation="horizontal" spacing="true">
+                <groupBox id="productInfoBox" caption="Product Information" orientation="horizontal" spacing="true"
+                          stylename="small borderless">
                     <form id="form" dataContainer="productDc" childrenCaptionWidth="150px">
                         <column width="250px">
                             <textField id="productNameField" property="productName"/>
                             <textField id="skuField" property="sku"/>
-                            <textArea id="productDescriptionField" property="productDescription"/>
+                            <textArea id="productDescriptionField" property="productDescription" rows="4"/>
                         </column>
                         <column width="150px" childrenCaptionWidth="1px">
                             <image id="imageField" property="image" scaleMode="SCALE_DOWN" rowspan="3" caption=" "/>
                         </column>
                     </form>
                 </groupBox>
-                <groupBox id="productPriceBox" caption="Product Price" orientation="vertical" stylename="light">
+                <groupBox id="productPriceBox" caption="Product Price" orientation="vertical" stylename="small borderless">
                     <form id="productPriceForm" dataContainer="productDc" childrenCaptionWidth="150px">
                         <column width="250px">
                             <textField id="pricePerUnitField" property="pricePerUnit"/>
@@ -63,15 +68,24 @@
                         </column>
                     </form>
                 </groupBox>
-                <groupBox id="vendorBox" caption="Vendor" orientation="vertical">
+                <groupBox id="vendorBox" caption="Vendor" orientation="vertical" stylename="small borderless">
                     <form id="productForm" dataContainer="productDc" childrenCaptionWidth="150px">
                         <column width="250px">
                             <textField property="vendor.companyName"/>
-                            <textArea property="vendor.contractTerms"/>
+                            <textArea property="vendor.contractTerms" rows="4"/>
                         </column>
                     </form>
                 </groupBox>
-                <groupBox id="stockBox" caption="Stock" orientation="vertical">
+                <groupBox id="stockBox" caption="Stock" orientation="vertical" stylename="small borderless">
+                    <form id="stockForm" dataContainer="productDc" childrenCaptionWidth="150px">
+                        <column width="250px">
+                            <textField property="minimumStock"/>
+                            <textField id="inStockField" caption="In stock" datatype="int"/>
+                            <textField id="reservedSaleField" caption="Reserved fo sale" datatype="int"/>
+                            <textField id="onPurchaseOrderField" caption="On purchase order" datatype="int"/>
+                            <textField id="availableField" caption="Available" datatype="int"/>
+                        </column>
+                    </form>
                 </groupBox>
             </vbox>
         </split>

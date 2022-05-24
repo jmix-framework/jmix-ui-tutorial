@@ -1,6 +1,7 @@
 package com.company.tutorial.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
@@ -9,7 +10,8 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "ORDER_", indexes = {
-        @Index(name = "IDX_ORDER_CUSTOMER_ID", columnList = "CUSTOMER_ID")
+        @Index(name = "IDX_ORDER_CUSTOMER_ID", columnList = "CUSTOMER_ID"),
+        @Index(name = "IDX_ORDER_ORDER_DETAILS_ID", columnList = "ORDER_DETAILS_ID")
 })
 @Entity(name = "Order_")
 public class Order {
@@ -29,7 +31,9 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "order")
+    @JoinColumn(name = "ORDER_DETAILS_ID")
+    @Composition
+    @OneToOne(fetch = FetchType.LAZY)
     private OrderDetails orderDetails;
 
     public OrderDetails getOrderDetails() {

@@ -1,8 +1,6 @@
 package com.company.tutorial.entity;
 
-import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
@@ -12,7 +10,6 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "ORDER_DETAILS", indexes = {
-        @Index(name = "IDX_ORDERDETAILS_ORDER_ID", columnList = "ORDER_ID"),
         @Index(name = "IDX_ORDERDETAILS_PRODUCT_ID", columnList = "PRODUCT_ID")
 })
 @Entity
@@ -21,6 +18,9 @@ public class OrderDetails {
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
+
+    @Column(name = "QUANTITY")
+    private Integer quantity;
 
     @InstanceName
     @Column(name = "SKU")
@@ -32,14 +32,17 @@ public class OrderDetails {
     @Column(name = "TOTAL_PRICE")
     private BigDecimal totalPrice;
 
-    @OnDeleteInverse(DeletePolicy.CASCADE)
-    @JoinColumn(name = "ORDER_ID")
-    @OneToOne(fetch = FetchType.LAZY)
-    private Order order;
-
     @JoinColumn(name = "PRODUCT_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
 
     public Product getProduct() {
         return product;
@@ -55,14 +58,6 @@ public class OrderDetails {
 
     public BigDecimal getTotalPrice() {
         return totalPrice;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
 
     public void setPricePerUnit(BigDecimal pricePerUnit) {

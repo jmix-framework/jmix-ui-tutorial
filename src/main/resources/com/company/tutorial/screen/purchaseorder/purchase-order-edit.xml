@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://purchaseOrderEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="purchaseOrderDc"
+                  class="com.company.tutorial.entity.PurchaseOrder">
+            <fetchPlan extends="_base">
+                <property name="vendor" fetchPlan="_base"/>
+                <property name="details" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <instance id="detailsDc" property="details"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="purchaseOrderDc">
+            <column width="350px">
+                <entityPicker id="vendorField" property="vendor">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <comboBox id="statusField" property="status"/>
+                <textField id="orderNumberField" property="orderNumber"/>
+                <entityPicker id="detailsField" property="details">
+                    <actions>
+                        <action id="entityOpenComposition" type="entity_openComposition"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "PURCHASE_ORDER_DETAILS", indexes = {
-        @Index(name = "IDX_PURCHASEORDERDETAILS", columnList = "PURCHASE_ORDER_ID"),
         @Index(name = "IDX_PURCHASEORDERDETAILS", columnList = "PRODUCT_ID")
 })
 @Entity
@@ -32,24 +31,12 @@ public class PurchaseOrderDetails {
     @Column(name = "TOTAL_PRICE", precision = 19, scale = 2)
     private BigDecimal totalPrice;
 
-    @JoinColumn(name = "PURCHASE_ORDER_ID")
-    @OneToOne(fetch = FetchType.LAZY)
-    private PurchaseOrder purchaseOrder;
-
     public Product getProduct() {
         return product;
     }
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public PurchaseOrder getPurchaseOrder() {
-        return purchaseOrder;
-    }
-
-    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
-        this.purchaseOrder = purchaseOrder;
     }
 
     public BigDecimal getTotalPrice() {
