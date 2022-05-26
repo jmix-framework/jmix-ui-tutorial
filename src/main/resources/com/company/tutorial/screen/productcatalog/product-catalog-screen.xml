@@ -22,12 +22,20 @@
         <dataLoadCoordinator auto="true"/>
     </facets>
     <layout>
-        <split id="split" height="100%" orientation="horizontal" reversePosition="true" width="100%">
+        <split id="split" height="100%" orientation="horizontal" width="100%" pos="660px" reversePosition="true">
             <vbox id="lookupBox" height="100%" margin="true" spacing="true" expand="productsTable">
                 <dataGrid id="productsTable" width="100%" dataContainer="productsDc" bodyRowHeight="70">
                     <actions>
-                        <action id="create" type="create"/>
-                        <action id="edit" type="edit"/>
+                        <action id="create" type="create">
+                            <properties>
+                                <property name="openMode" value="DIALOG"/>
+                            </properties>
+                        </action>
+                        <action id="edit" type="edit">
+                            <properties>
+                                <property name="openMode" value="DIALOG"/>
+                            </properties>
+                        </action>
                         <action id="remove" type="remove"/>
                     </actions>
                     <buttonsPanel alwaysVisible="true">
@@ -41,49 +49,55 @@
                         </column>
                         <column id="productName" property="productName"/>
                         <column id="unit" property="unit"/>
-                        <column id="sku" property="sku"/>
+                        <column id="pricePerUnit" property="pricePerUnit">
+                            <textRenderer nullRepresentation="null"/>
+                        </column>
+                        <column id="retailPrice" property="retailPrice">
+                            <textRenderer nullRepresentation="null"/>
+                        </column>
                     </columns>
                 </dataGrid>
             </vbox>
-            <vbox id="infoBox" margin="true" spacing="true" align="TOP_CENTER" width="95%">
-                <groupBox id="productInfoBox" caption="Product Information" orientation="horizontal" spacing="true"
-                          stylename="small borderless">
-                    <form id="form" dataContainer="productDc" childrenCaptionWidth="150px">
-                        <column width="250px">
-                            <textField id="productNameField" property="productName"/>
+            <vbox id="infoBox" margin="true" spacing="true" align="TOP_CENTER" width="100%">
+                <groupBox id="productInfoBox" caption="msg://productInfoBox.caption" orientation="horizontal" spacing="true"
+                          stylename="borderless">
+                    <form id="form" dataContainer="productDc" childrenCaptionWidth="150px" captionPosition="TOP">
+                        <column width="290px">
                             <textField id="skuField" property="sku"/>
-                            <textArea id="productDescriptionField" property="productDescription" rows="4"/>
+                            <textArea id="productDescriptionField" property="productDescription"/>
                         </column>
-                        <column width="150px" childrenCaptionWidth="1px">
-                            <image id="imageField" property="image" scaleMode="SCALE_DOWN" rowspan="3" caption=" "/>
-                        </column>
-                    </form>
-                </groupBox>
-                <groupBox id="productPriceBox" caption="Product Price" orientation="vertical" stylename="small borderless">
-                    <form id="productPriceForm" dataContainer="productDc" childrenCaptionWidth="150px">
-                        <column width="250px">
-                            <textField id="pricePerUnitField" property="pricePerUnit"/>
-                            <textField id="retailPriceField" property="retailPrice"/>
-                            <textField id="currencyField" property="currency"/>
+                        <column width="290px" childrenCaptionWidth="1px">
+                            <image id="imageField" property="image" scaleMode="SCALE_DOWN" rowspan="2" caption=" " height="100%"
+                                   alternateText=" "/>
                         </column>
                     </form>
                 </groupBox>
-                <groupBox id="vendorBox" caption="Vendor" orientation="vertical" stylename="small borderless">
-                    <form id="productForm" dataContainer="productDc" childrenCaptionWidth="150px">
-                        <column width="250px">
+                <groupBox id="vendorBox" caption="msg://vendorBox.caption" orientation="vertical" stylename="borderless">
+                    <form id="productForm" dataContainer="productDc" childrenCaptionWidth="150px" captionPosition="TOP">
+                        <column width="290px">
                             <textField property="vendor.companyName"/>
-                            <textArea property="vendor.contractTerms" rows="4"/>
+                        </column>
+                        <column width="290px">
+                            <textArea property="vendor.contractTerms"/>
                         </column>
                     </form>
                 </groupBox>
-                <groupBox id="stockBox" caption="Stock" orientation="vertical" stylename="small borderless">
-                    <form id="stockForm" dataContainer="productDc" childrenCaptionWidth="150px">
-                        <column width="250px">
+                <groupBox id="stockBox" caption="msg://stockBox.caption" orientation="vertical" stylename="borderless">
+                    <form id="stockForm" dataContainer="productDc" childrenCaptionWidth="150px" captionPosition="TOP">
+                        <column width="290px">
                             <textField property="minimumStock"/>
-                            <textField id="inStockField" caption="In stock" datatype="int"/>
-                            <textField id="reservedSaleField" caption="Reserved fo sale" datatype="int"/>
-                            <textField id="onPurchaseOrderField" caption="On purchase order" datatype="int"/>
-                            <textField id="availableField" caption="Available" datatype="int"/>
+                            <textField id="inStockField" caption="msg://inStockField.caption" datatype="int"
+                                       enable="false"/>
+                            <textField id="reservedSaleField" caption="msg://reservedSaleField.caption" datatype="int"
+                                       enable="false"/>
+                        </column>
+                        <column width="290px">
+                            <button id="showValuesBtn" caption="msg://showValuesBtn.caption" align="BOTTOM_CENTER"
+                                    height="100%" stylename="borderless" icon="ARROW_DOWN" enable="false"/>
+                            <textField id="onPurchaseOrderField" caption="msg://onPurchaseOrderField.caption" datatype="int"
+                                       enable="false"/>
+                            <textField id="availableField" caption="msg://availableField.caption" datatype="int"
+                                       enable="false"/>
                         </column>
                     </form>
                 </groupBox>

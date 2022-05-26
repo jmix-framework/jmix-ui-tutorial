@@ -1,10 +1,7 @@
 package com.company.tutorial.screen.productcatalog;
 
-import com.company.tutorial.entity.Order;
-import com.company.tutorial.entity.OrderDetails;
+import com.company.tutorial.bean.ProductService;
 import com.company.tutorial.entity.Product;
-import com.company.tutorial.entity.Status;
-import io.jmix.core.DataManager;
 import io.jmix.core.FileRef;
 import io.jmix.core.entity.EntityValues;
 import io.jmix.ui.UiComponents;
@@ -13,10 +10,7 @@ import io.jmix.ui.model.InstanceLoader;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @UiController("ProductCatalogScreen")
 @UiDescriptor("product-catalog-screen.xml")
@@ -24,11 +18,7 @@ public class ProductCatalogScreen extends Screen {
     @Autowired
     private InstanceLoader<Product> productDl;
     @Autowired
-    private DataGrid<Product> productsTable;
-    @Autowired
     private UiComponents uiComponents;
-    @Autowired
-    private DataManager dataManager;
     @Autowired
     private TextField<Integer> inStockField;
     @Autowired
@@ -38,67 +28,36 @@ public class ProductCatalogScreen extends Screen {
     @Autowired
     private TextField<Integer> availableField;
 
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private Button showValuesBtn;
+
     @Subscribe("productsTable")
     public void onProductsTableItemClick(DataGrid.ItemClickEvent<Product> event) {
         initializeFields();
-        productDl.setEntityId(Objects.requireNonNull(EntityValues.getId(event.getItem())));
-        productDl.load();
-        Integer inStock = getInStockByProduct(event.getItem());
-        if (inStock != null)
-            inStockField.setValue(inStock);
-        Integer reservedForSale = getReservedForSalesByProduct(event.getItem());
-        if (reservedForSale != null)
-            reservedSaleField.setValue(reservedForSale);
-        Integer onPurchaseOrder = getOnPurchaseOrderByProduct(event.getItem());
-        if (onPurchaseOrder != null)
-            onPurchaseOrderField.setValue(onPurchaseOrder);
-        if (inStock != null && reservedForSale != null)
-            availableField.setValue(inStock-reservedForSale);
-    }
+        loadClickedProduct(event.getItem());
 
+    }
+    private void loadClickedProduct(Product product){
+        productDl.setEntityId(Objects.requireNonNull(EntityValues.getId(product)));
+        productDl.load();
+    }
     private void initializeFields()
     {
         inStockField.setValue(0);
+        inStockField.setEnabled(false);
+
         reservedSaleField.setValue(0);
+        reservedSaleField.setEnabled(false);
+
         onPurchaseOrderField.setValue(0);
+        onPurchaseOrderField.setEnabled(false);
+
         availableField.setValue(0);
-    }
-    private Integer getInStockByProduct(Product p) {
-        return dataManager.loadValue(
-                        "select sum(s.inStock) from Stock s where s.product = :product",
-                        Integer.class
-                )
-                .parameter("product", p)
-                .one();
-    }
+        availableField.setEnabled(false);
 
-    /*private Optional<Integer> getInStockByProduct(Product p) {
-        return Optional.of(dataManager.loadValue(
-                        "select sum(s.inStock) from Stock s where s.product = :product",
-                        Integer.class
-                )
-                .parameter("product", p)
-                .one());
-    }*/
-
-    private Integer getReservedForSalesByProduct(Product p) {
-        return dataManager.loadValue(
-                        "select SUM(o.orderDetails.quantity) from Order_ o where o.status = :status and o.orderDetails.product = :product",
-                        Integer.class
-                )
-                .parameter("product", p)
-                .parameter("status", Status.OPEN)
-                .one();
-    }
-
-    private Integer getOnPurchaseOrderByProduct(Product p) {
-        return dataManager.loadValue(
-                        "select SUM(o.details.quantity) from PurchaseOrder o where o.status = :status and o.details.product = :product",
-                        Integer.class
-                )
-                .parameter("product", p)
-                .parameter("status", Status.OPEN)
-                .one();
+        showValuesBtn.setEnabled(true);
     }
 
     @Install(to = "productsTable.image", subject = "columnGenerator")
@@ -108,5 +67,40 @@ public class ProductCatalogScreen extends Screen {
                 .setFileReference(columnGeneratorEvent.getItem().getImage());
         image.setScaleMode(Image.ScaleMode.SCALE_DOWN);
         return image;
+    }
+
+    @Install(to = "productsTable.pricePerUnit", subject = "columnGenerator")
+    private String productsTablePricePerUnitColumnGenerator(DataGrid.ColumnGeneratorEvent<Product> columnGeneratorEvent) {
+        return columnGeneratorEvent.getItem().getPricePerUnit() + " " + columnGeneratorEvent.getItem().getCurrency();
+    }
+
+    @Install(to = "productsTable.retailPrice", subject = "columnGenerator")
+    private String productsTableRetailPriceColumnGenerator(DataGrid.ColumnGeneratorEvent<Product> columnGeneratorEvent) {
+        return columnGeneratorEvent.getItem().getRetailPrice() + " " + columnGeneratorEvent.getItem().getCurrency();
+    }
+
+    @Subscribe("showValuesBtn")
+    public void onShowValuesBtnClick(Button.ClickEvent event) {
+        Product product = productDl.getContainer().getItem();
+        Integer inStock = productService.getInStockByProduct(product);
+        if (inStock != null)
+            inStockField.setValue(inStock);
+        Integer reservedForSale = productService.getReservedForSalesByProduct(product);
+        if (reservedForSale != null)
+            reservedSaleField.setValue(reservedForSale);
+        Integer onPurchaseOrder = productService.getOnPurchaseOrderByProduct(product);
+        if (onPurchaseOrder != null)
+            onPurchaseOrderField.setValue(onPurchaseOrder);
+        if (inStock != null && reservedForSale != null)
+            availableField.setValue(inStock-reservedForSale);
+        showStockFields();
+    }
+
+    private void showStockFields(){
+        inStockField.setEnabled(true);
+        reservedSaleField.setEnabled(true);
+        onPurchaseOrderField.setEnabled(true);
+        availableField.setEnabled(true);
+        showValuesBtn.setEnabled(false);
     }
 }
