@@ -1,7 +1,9 @@
 package com.company.tutorial.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import io.jmix.core.metamodel.annotation.JmixProperty;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -25,11 +27,28 @@ public class PurchaseOrderDetails {
     @Column(name = "QUANTITY")
     private Integer quantity;
 
-    @Column(name = "PRICE_PER_UNIT")
-    private Integer pricePerUnit;
+    @Column(name = "DISCOUNT")
+    private Integer discount;
 
-    @Column(name = "TOTAL_PRICE", precision = 19, scale = 2)
-    private BigDecimal totalPrice;
+    @DependsOnProperties({"discount", "product"})
+    @JmixProperty
+    public BigDecimal getPricePerUnit() {
+        return getProduct().getPricePerUnit().multiply(new BigDecimal(100 - getDiscount()).divide(BigDecimal.valueOf(100)));
+    }
+
+    @DependsOnProperties({"pricePerUnit", "quantity"})
+    @JmixProperty
+    public BigDecimal getTotalPrice() {
+        return getPricePerUnit().multiply(new BigDecimal(getQuantity()));
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
+    }
 
     public Product getProduct() {
         return product;
@@ -37,22 +56,6 @@ public class PurchaseOrderDetails {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public Integer getPricePerUnit() {
-        return pricePerUnit;
-    }
-
-    public void setPricePerUnit(Integer pricePerUnit) {
-        this.pricePerUnit = pricePerUnit;
     }
 
     public Integer getQuantity() {

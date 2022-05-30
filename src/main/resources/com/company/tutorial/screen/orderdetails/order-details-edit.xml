@@ -30,7 +30,6 @@
         <form id="form" dataContainer="orderDetailsDc">
             <column width="350px">
                 <textField id="quantityField" property="quantity"/>
-                <textField id="skuField" property="sku"/>
                 <textField id="pricePerUnitField" property="pricePerUnit"/>
                 <textField id="totalPriceField" property="totalPrice"/>
                 <entityPicker id="productField" property="product">
@@ -39,6 +38,7 @@
                         <action id="entityClear" type="entity_clear"/>
                     </actions>
                 </entityPicker>
+                <textField id="discountField" property="discount"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

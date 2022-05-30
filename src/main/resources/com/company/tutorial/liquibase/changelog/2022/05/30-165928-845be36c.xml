@@ -38,6 +38,7 @@
             <column name="ORDER_NUMBER" type="VARCHAR(255)"/>
             <column name="STATUS" type="VARCHAR(255)"/>
             <column name="CUSTOMER_ID" type="UUID"/>
+            <column name="ORDER_DETAILS_ID" type="UUID"/>
         </createTable>
     </changeSet>
     <changeSet id="4" author="tutorial">
@@ -45,10 +46,8 @@
             <column name="ID" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ORDER_DETAILS"/>
             </column>
-            <column name="SKU" type="VARCHAR(255)"/>
-            <column name="PRICE_PER_UNIT" type="DECIMAL"/>
-            <column name="TOTAL_PRICE" type="DECIMAL"/>
-            <column name="ORDER_ID" type="UUID"/>
+            <column name="QUANTITY" type="INT"/>
+            <column name="DISCOUNT" type="INT"/>
             <column name="PRODUCT_ID" type="UUID"/>
         </createTable>
     </changeSet>
@@ -77,6 +76,7 @@
             <column name="VENDOR_ID" type="UUID"/>
             <column name="STATUS" type="VARCHAR(255)"/>
             <column name="ORDER_NUMBER" type="VARCHAR(255)"/>
+            <column name="DETAILS_ID" type="UUID"/>
         </createTable>
     </changeSet>
     <changeSet id="7" author="tutorial">
@@ -86,9 +86,7 @@
             </column>
             <column name="PRODUCT_ID" type="UUID"/>
             <column name="QUANTITY" type="INT"/>
-            <column name="PRICE_PER_UNIT" type="INT"/>
-            <column name="TOTAL_PRICE" type="DECIMAL(19, 2)"/>
-            <column name="PURCHASE_ORDER_ID" type="UUID"/>
+            <column name="DISCOUNT" type="INT"/>
         </createTable>
     </changeSet>
     <changeSet id="8" author="tutorial">
@@ -116,7 +114,7 @@
         </createIndex>
 
         <addForeignKeyConstraint baseColumnNames="CUSTOMER_ID" baseTableName="CONTACT"
-                                 constraintName="FK_CONTACT_ON_CUSTOMER" referencedColumnNames="ID"
+                                 constraintName="FK_CONTACT_ON_CUSTOMER" onDelete="CASCADE" referencedColumnNames="ID"
                                  referencedTableName="CUSTOMER"/>
     </changeSet>
     <changeSet id="11" author="tutorial">
@@ -129,15 +127,6 @@
                                  referencedTableName="VENDOR"/>
     </changeSet>
     <changeSet id="12" author="tutorial">
-        <createIndex indexName="IDX_ORDERDETAILS_ORDER_ID" tableName="ORDER_DETAILS">
-            <column name="ORDER_ID"/>
-        </createIndex>
-
-        <addForeignKeyConstraint baseColumnNames="ORDER_ID" baseTableName="ORDER_DETAILS"
-                                 constraintName="FK_ORDER_DETAILS_ON_ORDER" onDelete="CASCADE"
-                                 referencedColumnNames="ID" referencedTableName="ORDER_"/>
-    </changeSet>
-    <changeSet id="13" author="tutorial">
         <createIndex indexName="IDX_ORDERDETAILS_PRODUCT_ID" tableName="ORDER_DETAILS">
             <column name="PRODUCT_ID"/>
         </createIndex>
@@ -146,7 +135,7 @@
                                  constraintName="FK_ORDER_DETAILS_ON_PRODUCT" referencedColumnNames="ID"
                                  referencedTableName="PRODUCT"/>
     </changeSet>
-    <changeSet id="14" author="tutorial">
+    <changeSet id="13" author="tutorial">
         <createIndex indexName="IDX_ORDER_CUSTOMER_ID" tableName="ORDER_">
             <column name="CUSTOMER_ID"/>
         </createIndex>
@@ -154,6 +143,15 @@
         <addForeignKeyConstraint baseColumnNames="CUSTOMER_ID" baseTableName="ORDER_"
                                  constraintName="FK_ORDER__ON_CUSTOMER" referencedColumnNames="ID"
                                  referencedTableName="CUSTOMER"/>
+    </changeSet>
+    <changeSet id="14" author="tutorial">
+        <createIndex indexName="IDX_ORDER_ORDER_DETAILS_ID" tableName="ORDER_">
+            <column name="ORDER_DETAILS_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="ORDER_DETAILS_ID" baseTableName="ORDER_"
+                                 constraintName="FK_ORDER__ON_ORDER_DETAILS" referencedColumnNames="ID"
+                                 referencedTableName="ORDER_DETAILS"/>
     </changeSet>
     <changeSet id="15" author="tutorial">
         <createIndex indexName="IDX_PRODUCT_VENDOR_ID" tableName="PRODUCT">
@@ -174,6 +172,15 @@
                                  referencedTableName="PRODUCT"/>
     </changeSet>
     <changeSet id="17" author="tutorial">
+        <createIndex indexName="IDX_PURCHASEORDER_DETAILS_ID" tableName="PURCHASE_ORDER">
+            <column name="DETAILS_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="DETAILS_ID" baseTableName="PURCHASE_ORDER"
+                                 constraintName="FK_PURCHASE_ORDER_ON_DETAILS" referencedColumnNames="ID"
+                                 referencedTableName="PURCHASE_ORDER_DETAILS"/>
+    </changeSet>
+    <changeSet id="18" author="tutorial">
         <createIndex indexName="IDX_PURCHASEORDER_VENDOR_ID" tableName="PURCHASE_ORDER">
             <column name="VENDOR_ID"/>
         </createIndex>
@@ -182,17 +189,12 @@
                                  constraintName="FK_PURCHASE_ORDER_ON_VENDOR" referencedColumnNames="ID"
                                  referencedTableName="VENDOR"/>
     </changeSet>
-    <changeSet id="18" author="tutorial">
+    <changeSet id="19" author="tutorial">
         <createIndex indexName="IDX_STOCK_PRODUCT_ID" tableName="STOCK">
             <column name="PRODUCT_ID"/>
         </createIndex>
 
         <addForeignKeyConstraint baseColumnNames="PRODUCT_ID" baseTableName="STOCK" constraintName="FK_STOCK_ON_PRODUCT"
                                  referencedColumnNames="ID" referencedTableName="PRODUCT"/>
-    </changeSet>
-    <changeSet id="19" author="tutorial">
-        <addForeignKeyConstraint baseColumnNames="PURCHASE_ORDER_ID" baseTableName="PURCHASE_ORDER_DETAILS"
-                                 constraintName="FK_PURCHASEORD_ON_PURCHASEORD" referencedColumnNames="ID"
-                                 referencedTableName="PURCHASE_ORDER"/>
     </changeSet>
 </databaseChangeLog>

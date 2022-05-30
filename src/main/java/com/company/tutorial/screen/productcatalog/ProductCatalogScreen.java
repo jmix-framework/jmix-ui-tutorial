@@ -63,9 +63,12 @@ public class ProductCatalogScreen extends Screen {
     @Install(to = "productsTable.image", subject = "columnGenerator")
     private Component productsTableImageColumnGenerator(DataGrid.ColumnGeneratorEvent<Product> columnGeneratorEvent) {
         Image<FileRef> image = uiComponents.create(Image.NAME);
-        image.setSource(FileStorageResource.class)
-                .setFileReference(columnGeneratorEvent.getItem().getImage());
-        image.setScaleMode(Image.ScaleMode.SCALE_DOWN);
+        FileRef imageRef = columnGeneratorEvent.getItem().getImage();
+        if (imageRef != null) {
+            image.setSource(FileStorageResource.class)
+                    .setFileReference(columnGeneratorEvent.getItem().getImage());
+            image.setScaleMode(Image.ScaleMode.SCALE_DOWN);
+        }
         return image;
     }
 
@@ -91,8 +94,11 @@ public class ProductCatalogScreen extends Screen {
         Integer onPurchaseOrder = productService.getOnPurchaseOrderByProduct(product);
         if (onPurchaseOrder != null)
             onPurchaseOrderField.setValue(onPurchaseOrder);
-        if (inStock != null && reservedForSale != null)
-            availableField.setValue(inStock-reservedForSale);
+        if (inStock != null && reservedForSale != null){
+            int available = inStock-reservedForSale;
+            if (available >= 0)
+                availableField.setValue(available);
+        }
         showStockFields();
     }
 

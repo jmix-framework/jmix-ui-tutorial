@@ -38,6 +38,7 @@
                 <textField id="quantityField" property="quantity"/>
                 <textField id="pricePerUnitField" property="pricePerUnit"/>
                 <textField id="totalPriceField" property="totalPrice"/>
+                <textField id="discountField" property="discount"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

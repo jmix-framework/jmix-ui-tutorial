@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://jmix.io/schema/ui/window"
         xmlns:c="http://jmix.io/schema/ui/jpql-condition"
-        caption="msg://stockBrowse.caption"
-        focusComponent="stocksTable">
+        caption="msg://productBrowse.caption"
+        focusComponent="productsTable">
     <data readOnly="true">
-        <collection id="stocksDc"
-                    class="com.company.tutorial.entity.Stock">
+        <collection id="productsDc"
+                    class="com.company.tutorial.entity.Product">
             <fetchPlan extends="_base">
-                <property name="product" fetchPlan="_base"/>
+                <property name="vendor" fetchPlan="_base"/>
             </fetchPlan>
-            <loader id="stocksDl">
+            <loader id="productsDl">
                 <query>
-                    <![CDATA[select e from Stock e]]>
+                    <![CDATA[select e from Product e]]>
                 </query>
             </loader>
         </collection>
@@ -32,29 +32,37 @@
     </actions>
     <dialogMode height="600"
                 width="800"/>
-    <layout expand="stocksTable" spacing="true">
+    <layout expand="productsTable" spacing="true">
         <filter id="filter"
-                dataLoader="stocksDl">
+                dataLoader="productsDl">
             <properties include=".*"/>
         </filter>
-        <groupTable id="stocksTable"
+        <groupTable id="productsTable"
                     width="100%"
-                    dataContainer="stocksDc">
+                    dataContainer="productsDc">
             <actions>
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>
                 <action id="remove" type="remove"/>
             </actions>
             <columns>
-                <column id="inStock"/>
-                <column id="product"/>
+                <column id="productName"/>
+                <column id="productDescription"/>
+                <column id="unit"/>
+                <column id="pricePerUnit"/>
+                <column id="retailPrice"/>
+                <column id="sku"/>
+                <column id="currency"/>
+                <column id="minimumStock"/>
+                <column id="image"/>
+                <column id="vendor"/>
             </columns>
             <simplePagination/>
             <buttonsPanel id="buttonsPanel"
                           alwaysVisible="true">
-                <button id="createBtn" action="stocksTable.create"/>
-                <button id="editBtn" action="stocksTable.edit"/>
-                <button id="removeBtn" action="stocksTable.remove"/>
+                <button id="createBtn" action="productsTable.create"/>
+                <button id="editBtn" action="productsTable.edit"/>
+                <button id="removeBtn" action="productsTable.remove"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">

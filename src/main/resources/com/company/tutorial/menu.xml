@@ -12,5 +12,6 @@
         <item screen="Order_.browse" caption="msg://com.company.tutorial.screen.order/orderBrowse.menu"/>
         <item screen="PurchaseOrder.browse"
               caption="msg://com.company.tutorial.screen.purchaseorder/purchaseOrderBrowse.menu"/>
+        <item screen="Product.browse" caption="msg://com.company.tutorial.screen.product/productBrowse.menu"/>
 </menu>
 </menu-config>
