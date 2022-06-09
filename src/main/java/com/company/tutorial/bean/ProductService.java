@@ -8,35 +8,39 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductService {
+
     @Autowired
     private DataManager dataManager;
 
-    public Integer getInStockByProduct(Product p) {
+    public int getInStockByProduct(Product p) {
         return dataManager.loadValue(
                         "select sum(s.inStock) from Stock s where s.product = :product",
                         Integer.class
                 )
                 .parameter("product", p)
-                .one();
+                .optional()
+                .orElse(0);
     }
 
-    public Integer getReservedForSalesByProduct(Product p) {
+    public int getReservedForSalesByProduct(Product p) {
         return dataManager.loadValue(
-                        "select SUM(o.orderDetails.quantity) from Order_ o where o.status = :status and o.orderDetails.product = :product",
+                        "select sum(o.orderDetails.quantity) from Order_ o where o.status = :status and o.orderDetails.product = :product",
                         Integer.class
                 )
                 .parameter("product", p)
                 .parameter("status", Status.OPEN)
-                .one();
+                .optional()
+                .orElse(0);
     }
 
-    public Integer getOnPurchaseOrderByProduct(Product p) {
+    public int getOnPurchaseOrderByProduct(Product p) {
         return dataManager.loadValue(
                         "select SUM(o.details.quantity) from PurchaseOrder o where o.status = :status and o.details.product = :product",
                         Integer.class
                 )
                 .parameter("product", p)
                 .parameter("status", Status.OPEN)
-                .one();
+                .optional()
+                .orElse(0);
     }
 }

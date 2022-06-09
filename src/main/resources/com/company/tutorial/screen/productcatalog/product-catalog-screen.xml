@@ -87,17 +87,17 @@
                         <column width="290px">
                             <textField property="minimumStock"/>
                             <textField id="inStockField" caption="msg://inStockField.caption" datatype="int"
-                                       enable="false"/>
+                                       editable="false"/>
                             <textField id="reservedSaleField" caption="msg://reservedSaleField.caption" datatype="int"
-                                       enable="false"/>
+                                       editable="false"/>
                         </column>
                         <column width="290px">
                             <button id="showValuesBtn" caption="msg://showValuesBtn.caption" align="BOTTOM_CENTER"
                                     height="100%" stylename="borderless" icon="ARROW_DOWN" enable="false"/>
                             <textField id="onPurchaseOrderField" caption="msg://onPurchaseOrderField.caption" datatype="int"
-                                       enable="false"/>
+                                       editable="false"/>
                             <textField id="availableField" caption="msg://availableField.caption" datatype="int"
-                                       enable="false"/>
+                                       editable="false"/>
                         </column>
                     </form>
                 </groupBox>
