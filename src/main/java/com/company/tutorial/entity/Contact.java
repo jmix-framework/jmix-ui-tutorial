@@ -12,8 +12,7 @@ import java.util.UUID;
 @JmixEntity
 @Table(name = "CONTACT", indexes = {
         @Index(name = "IDX_CONTACT_CUSTOMER_ID", columnList = "CUSTOMER_ID"),
-        @Index(name = "IDX_CONTACT_VENDOR_ID", columnList = "VENDOR_ID"),
-        @Index(name = "IDX_CONTACT_CUSTOMER_ID", columnList = "CUSTOMER_ID")
+        @Index(name = "IDX_CONTACT_VENDOR_ID", columnList = "VENDOR_ID")
 })
 @Entity
 public class Contact {
@@ -45,6 +44,7 @@ public class Contact {
     @JoinColumn(name = "VENDOR_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Vendor vendor;
+
     @JoinColumn(name = "CUSTOMER_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;

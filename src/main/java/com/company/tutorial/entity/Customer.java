@@ -20,9 +20,6 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<Contact> contacts;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Order> orders;
-
     @InstanceName
     @Column(name = "COMPANY_NAME")
     private String companyName;
@@ -32,14 +29,6 @@ public class Customer {
 
     @Column(name = "ACCOUNT_NUMBER")
     private String accountNumber;
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
 
     public List<Contact> getContacts() {
         return contacts;

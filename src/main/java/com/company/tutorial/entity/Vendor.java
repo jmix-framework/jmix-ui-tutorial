@@ -18,7 +18,7 @@ public class Vendor {
     private UUID id;
 
     @OneToMany(mappedBy = "vendor")
-    private List<Contact> contact;
+    private List<Contact> contacts;
 
     @InstanceName
     @Column(name = "COMPANY_NAME")
@@ -31,22 +31,22 @@ public class Vendor {
     private String contractTerms;
 
     @OneToMany(mappedBy = "vendor")
-    private List<Product> product;
+    private List<Product> products;
 
-    public List<Contact> getContact() {
-        return contact;
+    public List<Contact> getContacts() {
+        return contacts;
     }
 
-    public void setContact(List<Contact> contact) {
-        this.contact = contact;
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 
-    public List<Product> getProduct() {
-        return product;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProduct(List<Product> product) {
-        this.product = product;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public String getContractTerms() {

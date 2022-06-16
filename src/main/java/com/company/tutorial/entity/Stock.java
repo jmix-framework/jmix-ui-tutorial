@@ -1,6 +1,7 @@
 package com.company.tutorial.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class Stock {
     @Id
     private UUID id;
 
+    @InstanceName
     @JoinColumn(name = "PRODUCT_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;

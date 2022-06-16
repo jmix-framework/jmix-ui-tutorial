@@ -1,6 +1,7 @@
 package com.company.tutorial.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
@@ -9,7 +10,8 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "PURCHASE_ORDER", indexes = {
-        @Index(name = "IDX_PURCHASEORDER_VENDOR_ID", columnList = "VENDOR_ID")
+        @Index(name = "IDX_PURCHASEORDER_VENDOR_ID", columnList = "VENDOR_ID"),
+        @Index(name = "IDX_PURCHASEORDER_DETAILS_ID", columnList = "DETAILS_ID")
 })
 @Entity
 public class PurchaseOrder {
@@ -29,8 +31,18 @@ public class PurchaseOrder {
     @Column(name = "ORDER_NUMBER")
     private String orderNumber;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "purchaseOrder")
-    private PurchaseOrderDetails purchaseOrderDetails;
+    @JoinColumn(name = "DETAILS_ID")
+    @Composition
+    @OneToOne(fetch = FetchType.LAZY)
+    private PurchaseOrderDetails details;
+
+    public PurchaseOrderDetails getDetails() {
+        return details;
+    }
+
+    public void setDetails(PurchaseOrderDetails details) {
+        this.details = details;
+    }
 
     public Vendor getVendor() {
         return vendor;
@@ -38,14 +50,6 @@ public class PurchaseOrder {
 
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
-    }
-
-    public PurchaseOrderDetails getPurchaseOrderDetails() {
-        return purchaseOrderDetails;
-    }
-
-    public void setPurchaseOrderDetails(PurchaseOrderDetails purchaseOrderDetails) {
-        this.purchaseOrderDetails = purchaseOrderDetails;
     }
 
     public String getOrderNumber() {
