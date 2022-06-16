@@ -59,7 +59,7 @@
                 </dataGrid>
             </vbox>
             <vbox id="infoBox" margin="true" spacing="true" align="TOP_CENTER" width="100%">
-                <groupBox id="productInfoBox" caption="msg://productInfoBox.caption" orientation="horizontal" spacing="true"
+                <groupBox id="productInfoBox" caption="msg://productInfoBox.caption" orientation="vertical" spacing="true"
                           stylename="borderless">
                     <form id="form" dataContainer="productDc" childrenCaptionWidth="150px" captionPosition="TOP">
                         <column width="290px">
